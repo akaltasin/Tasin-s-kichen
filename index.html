@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tasin's Kitchen - Live Order</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #ff4757;
+            --secondary: #2ed573;
+            --bg-color: #f4f7f6;
+            --text-dark: #2f3542;
+            --text-light: #ffffff;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Hind Siliguri', 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-dark);
+        }
+
+        /* Navbar */
+        header {
+            background-color: var(--primary);
+            color: var(--text-light);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        header h1 { margin: 0; position: sticky; font-size: 22px; font-weight: 700; }
+        header p { margin: 0; position: sticky; font-size: 13px; opacity: 0.9; }
+        .contact-info { font-weight: 600; font-size: 15px; background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius: 8px;}
+
+        /* Main Layout */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+            gap: 25px;
+            position: sticky;
+        }
+
+        /* Menu Section (Left) */
+        .menu-wrapper { flex: 1.5; min-width: 300px; }
+        .section-title { font-size: 20px; margin-bottom: 20px; border-bottom: 2px solid var(--primary); display: inline-block; padding-bottom: 5px; }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        
+        .food-card {
+            background: #fff; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08); transition: transform 0.2s; cursor: pointer;
+            border: 1px solid #eee;
+        }
+        .food-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 8px 20px rgba(255, 71, 87, 0.2); }
+        .food-img { width: 100%; height: 140px; object-fit: cover; border-bottom: 2px solid #f1f2f6; }
+        .food-info { padding: 12px; text-align: center; }
+        .food-title { font-size: 16px; font-weight: 700; margin-bottom: 5px; }
+        .food-price { color: var(--primary); font-size: 18px; font-weight: bold; margin-bottom: 12px; }
+        .order-btn {
+            background: var(--primary); color: white; border: none; padding: 8px 15px;
+            border-radius: 20px; font-size: 14px; cursor: pointer; width: 100%; font-weight: 600; transition: 0.3s;
+        }
+        .food-card:hover .order-btn { background: #ff6b81; }
+
+        /* AI Chat Section (Right) */
+        .chat-wrapper {
+            flex: 1; min-width: 300px; position: sticky; top: 90px; height: calc(100vh - 120px);
+        }
+        .chat-container {
+            background: #fff; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            display: flex; flex-direction: column; height: 100%; border: 1px solid #ddd;
+        }
+        .chat-header {
+            background: var(--secondary);position: sticky; color: white; padding: 15px; font-size: 16px; font-weight: 600;
+            display: flex; justify-content: space-between; align-items: center; border-radius: 15px 15px 0 0;
+        }
+        
+        .chat-header span { font-size: 11px; background: rgba(0,0,0,0.2); padding: 3px 8px; border-radius: 10px; }
+        .chat-box { flex: 1; padding: 15px; overflow-y: auto; background: #f8f9fa; display: flex; flex-direction: column; gap: 12px; }
+        .msg { max-width: 85%; padding: 10px 15px; font-size: 14px; line-height: 1.5; white-space: pre-line; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .bot-msg { background: #fff; color: #333; align-self: flex-start; border-radius: 0 15px 15px 15px; border-left: 4px solid var(--secondary); }
+        .user-msg { background: var(--primary); color: white; align-self: flex-end; border-radius: 15px 0 15px 15px; }
+        .chat-input { display: flex; padding: 10px; background: #fff; border-top: 1px solid #eee; border-radius: 0 0 15px 15px; }
+        .chat-input input {
+            flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 20px 0 0 20px; outline: none; font-size: 14px;
+        }
+        .chat-input button {
+            background: var(--secondary); color: white; border: none; padding: 0 20px; border-radius: 0 20px 20px 0;
+            cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.3s;
+        }
+        .chat-input button:disabled { background: #ccc; cursor: not-allowed; }
+
+        /* Fake SMS Pop-up */
+        .sms-toast {
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+            background: #2f3542; color: #fff; width: 90%; max-width: 350px; padding: 15px; border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: top 0.5s ease; z-index: 2000;
+            display: flex; align-items: center; gap: 15px;
+        }
+        .sms-toast.show { top: 20px; }
+
+        /* --- MOBILE RESPONSIVE CSS --- */
+        @media (max-width: 768px) {
+            .container { flex-direction: column; padding: 10px; margin: 10px auto;}
+            .menu-wrapper { width: 100%; flex: none; }
+            .chat-wrapper { 
+                width: 100%; flex: none; position: relative; top: 0; 
+                height: 450px; /* Fixed height for chat on mobile */
+                margin-top: 20px; margin-bottom: 30px;
+            }
+            .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } /* 2 items side-by-side on mobile */
+            .food-img { height: 110px; }
+            .food-title { font-size: 14px; }
+            .food-price { font-size: 16px; }
+            header h1 { font-size: 18px; }
+            .contact-info { font-size: 12px; }
+         }
+            section {
+            margin: 20px auto;
+            max-width: 300px;
+            background-color: #375903;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 255, 0, 0.2);
+            padding: 20px;
+            font-size: 18px; 
+
+        }
+  h2 {
+            color: #d61111;
+        }
+        img {
+            border-radius: 80%;
+            width: 20px;
+            height: 20px;
+            object-fit: cover;
+            margin-top: 10px;
+        }       
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1>🍽️ Tasin's Kitchen</h1>
+            <p>Order Fast & Easy</p>
+        </div>
+        <div class="contact-info">📞 সাপোর্ট</div>
+    </header>
+
+    <div class="container">
+        <!-- Menu Items -->
+        <div class="menu-wrapper">
+            <h2 class="section-title">আজকের মেন্যু</h2>
+            <div class="menu-grid">
+                
+                <div class="food-card" onclick="startOrder('Kacchi Biriyani', 350)">
+                    <img src="kacchi.jpeg" alt="Kacchi" class="food-img" onerror="this.src='https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&q=80'">
+                    <div class="food-info">
+                        <div class="food-title">Kacchi Biriyani</div>
+                        <div class="food-price">৩৫০ ৳</div>
+                        <button class="order-btn">অর্ডার করুন</button>
+                    </div>
+                </div>
+
+                <div class="food-card" onclick="startOrder('Burger', 220)">
+                    <img src="burger.jpeg" alt="Burger" class="food-img" onerror="this.src='https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80'">
+                    <div class="food-info">
+                        <div class="food-title">Burger</div>
+                        <div class="food-price">২২০ ৳</div>
+                        <button class="order-btn">অর্ডার করুন</button>
+                    </div>
+                </div>
+
+                <div class="food-card" onclick="startOrder('Beef Pizza', 750)">
+                    <img src="beef pizza.jpeg" alt="Pizza" class="food-img" onerror="this.src='https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'">
+                    <div class="food-info">
+                        <div class="food-title">Beef Pizza</div>
+                        <div class="food-price">৭৫০ ৳</div>
+                        <button class="order-btn">অর্ডার করুন</button>
+                    </div>
+                </div>
+
+                <div class="food-card" onclick="startOrder('Cold Coffee', 150)">
+                    <img src="coffee.jpeg" alt="Coffee" class="food-img" onerror="this.src='https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80'">
+                    <div class="food-info">
+                        <div class="food-title">Cold Coffee</div>
+                        <div class="food-price">১৫০ ৳</div>
+                        <button class="order-btn">অর্ডার করুন</button>
+                  </div>
+                    </div>
+                    <div class="food-card" onclick="startOrder('Cheez Pizza', 150)">
+                    <img src="cheez pizza.jpeg" alt="Coffee" class="food-img" onerror="this.src='https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80'">
+                    <div class="food-info">
+                        <div class="food-title">Cheez Pizza</div>
+                        <div class="food-price">১৫০ ৳</div>
+                        <button class="order-btn">অর্ডার করুন</button>
+                    </div>
+                    </div>
+
+                <div class="food-card" onclick="startOrder('Cold Coffee', 150)">
+                    <img src="coffee.jpeg" alt="Coffee" class="food-img" onerror="this.src='https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80'">
+                    <div class="food-info">
+                        <div class="food-title">Cold Coffee</div>
+                        <div class="food-price">১৫০ ৳</div>
+                        <button class="order-btn">অর্ডার করুন</button>
+                    </div>
+                    </div>
+                    <div class="food-card" onclick="startOrder('Fast Food', 150)">
+                    <img src="fast food.jpeg" alt="Coffee" class="food-img" onerror="this.src='https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80'">
+                    <div class="food-info">
+                        <div class="food-title">Fast Food</div>
+                        <div class="food-price">১৫০ ৳</div>
+                        <button class="order-btn">অর্ডার করুন</button>
+                    </div>
+        </div>
+
+        <!-- AI Chatbot -->
+        <div class="chat-wrapper" position: sticky;>
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div>🤖 AI বট</div> <span>🟢 Active</span>
+                </div>
+                <div class="chat-box" id="chat-box">
+                    <div class="msg bot-msg">আসসালামু আলাইকুম! 🙏 মেন্যু থেকে আপনার পছন্দের খাবারের ছবিতে ক্লিক করে অর্ডার শুরু করুন।</div>
+                </div>
+                <div class="chat-input">
+                    <input type="number" id="user-input" placeholder="এখানে লিখুন..." onkeypress="checkEnter(event)" disabled>
+                    <button id="send-btn" onclick="processUserInput()" disabled>পাঠান</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SMS Notification -->
+    <div class="sms-toast" id="sms-toast">
+        <div style="font-size: 24px;">✅</div>
+        <div>
+            <h4 style="margin: 0; color: #2ed573; font-size: 14px;">অর্ডার কনফার্মড!</h4>
+            <p style="margin: 3px 0 0; font-size: 12px; opacity: 0.9;">আপনার অর্ডারটি রেস্টুরেন্টে পাঠানো হচ্ছে...</p>
+        </div>
+    </div>
+
+    <!-- JavaScript For Order Logic & WhatsApp Forwarding -->
+    <script>
+        // 🔴🔴🔴 এখানে আপনার (রেস্টুরেন্ট মালিকের) আসল WhatsApp নাম্বার দিন 🔴🔴🔴
+        // নাম্বার অবশ্যই 880 দিয়ে শুরু হতে হবে। (যেমন: 8801642596101)
+        const RESTAURANT_OWNER_WHATSAPP = "8801642596101"; 
+
+        let chatState = 0; 
+        let orderDetails = { name: "", price: 0, qty: 0, total: 0 };
+        const chatBox = document.getElementById("chat-box");
+        const userInput = document.getElementById("user-input");
+        const sendBtn = document.getElementById("send-btn");
+
+        function startOrder(name, price) {
+            orderDetails.name = name;
+            orderDetails.price = price;
+            chatState = 1; 
+
+            userInput.disabled = false;
+            sendBtn.disabled = false;
+            userInput.focus();
+            
+            // On mobile, scroll down to chatbox when an item is clicked
+            if(window.innerWidth <= 768) {
+                document.querySelector('.chat-wrapper').scrollIntoView({ behavior: 'smooth' });
+            }
+
+            appendMessage(`আমি ${name} চাই।`, "user-msg");
+
+            setTimeout(() => {
+                appendMessage(`অসাধারণ! ${name}-এর দাম ${price} টাকা। \nআপনার কয়টি লাগবে? (সংখ্যায় লিখুন, যেমন: 1, 2)`, "bot-msg");
+            }, 600);
+        }
+
+        function processUserInput() {
+            let text = userInput.value.trim();
+            if (text === "") return;
+
+            appendMessage(text, "user-msg");
+            userInput.value = "";
+
+            if (chatState === 1) {
+                let engNum = text.replace(/[০-৯]/g, d => "০১২৩৪৫৬৭৮৯".indexOf(d));
+                let qty = parseInt(engNum);
+
+                setTimeout(() => {
+                    if (!isNaN(qty) && qty > 0) {
+                        orderDetails.qty = qty;
+                        orderDetails.total = orderDetails.price * qty;
+                        chatState = 2; 
+                        
+                        appendMessage(`ঠিক আছে, ${qty} টি ${orderDetails.name}-এর মোট বিল ${orderDetails.total} টাকা। \nকনফার্ম করতে আপনার ১১-ডিজিটের মোবাইল নাম্বারটি দিন।`, "bot-msg");
+                    } else {
+                        appendMessage("❌ শুধু সংখ্যায় লিখুন কয়টি লাগবে? (যেমন: 1 বা 2)", "bot-msg");
+                    }
+                }, 700);
+            } 
+            else if (chatState === 2) {
+                let phoneRegex = /^(01)[3-9][0-9]{8}$/; 
+                
+                setTimeout(() => {
+                    if (phoneRegex.test(text)) {
+                        appendMessage(`✅ ধন্যবাদ! আপনার অর্ডার কনফার্ম হয়েছে। এখন আপনাকে রেস্টুরেন্টের WhatsApp-এ নিয়ে যাওয়া হচ্ছে...`, "bot-msg");
+                        
+                        chatState = 0; 
+                        userInput.disabled = true;
+                        sendBtn.disabled = true;
+
+                        // Show Success SMS Popup
+                        const smsBox = document.getElementById("sms-toast");
+                        smsBox.classList.add("show");
+                        setTimeout(() => smsBox.classList.remove("show"), 4000);
+
+                        // 🟢 WhatsApp Message Logic 🟢
+                        // এই মেসেজটি রেস্টুরেন্ট মালিকের কাছে যাবে
+                        let adminMessage = `🔔 *নতুন অর্ডার এসেছে!*\n\n` +
+                                           `🍽️ আইটেম: ${orderDetails.name}\n` +
+                                           `📦 পরিমাণ: ${orderDetails.qty} টি\n` +
+                                           `💰 মোট বিল: ${orderDetails.total} টাকা\n` +
+                                           `📞 কাস্টমার নাম্বার: ${text}\n\n` +
+                                           `দয়া করে কাস্টমারকে কল করে ডেলিভারি ঠিকানা জেনে নিন।`;
+                        
+                        let waLink = `https://wa.me/${RESTAURANT_OWNER_WHATSAPP}?text=${encodeURIComponent(adminMessage)}`;
+
+                        // ৩ সেকেন্ড পর কাস্টমারকে WhatsApp-এ পাঠিয়ে দিবে
+                        setTimeout(() => {
+                            window.open(waLink, '_blank');
+                        }, 3000);
+
+                    } else {
+                        appendMessage("❌ সঠিক ১১-ডিজিটের মোবাইল নাম্বার দিন (যেমন: 017XXXXXXXX)।", "bot-msg");
+                    }
+                }, 700);
+            }
+        }
+
+        function appendMessage(text, type) {
+            let div = document.createElement("div");
+            div.className = `msg ${type}`;
+            div.innerText = text;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function checkEnter(event) {
+            if (event.key === "Enter") {
+                processUserInput();
+            }
+        }
+    </script>
+     </section>
+        
+        <section>
+            <h2>Contact Me</h2>
+            <!-- Add your photo here -->
+           <img src="cont.png" alt="A K Al Tasin's Photo">
+            <p>Feel free to reach out to me via:</p>
+            <a href="tel:+8801642596101" target="_blank">📞 Call Me</a><br>
+            <a href="https://wa.me/+8801642596101" target="_blank">💬 WhatsApp</a><br>
+            <a href="https://facebook.com/100015640369033" target="_blank">🌐 Facebook</a>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 A K Al Tasin's Website</p>
+    </footer>
+</body>
+</html>
