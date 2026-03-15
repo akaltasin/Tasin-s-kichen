@@ -64,7 +64,10 @@
             border: 1px solid #eee;
         }
         .food-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 8px 20px rgba(255, 71, 87, 0.2); }
+        
+        /* 🔴 Fixed Image Style: Added this class back to your HTML */
         .food-img { width: 100%; height: 140px; object-fit: cover; border-bottom: 2px solid #f1f2f6; }
+        
         .food-info { padding: 12px; text-align: center; }
         .food-title { font-size: 16px; font-weight: 700; margin-bottom: 5px; }
         .food-price { color: var(--primary); font-size: 18px; font-weight: bold; margin-bottom: 12px; }
@@ -155,7 +158,7 @@
             <div class="menu-grid">
                 
                 <div class="food-card" onclick="startOrder('Kacchi Biriyani', 350)">
-                    <img src="kacchi.jpeg">
+                    <img src="kacchi.jpeg" class="food-img" alt="Kacchi">
                     <div class="food-info">
                         <div class="food-title">Kacchi Biriyani</div>
                         <div class="food-price">৩৫০ ৳</div>
@@ -164,7 +167,7 @@
                 </div>
 
                 <div class="food-card" onclick="startOrder('Burger', 220)">
-                    <img src="burger.jpeg">
+                    <img src="burger.jpeg" class="food-img" alt="Burger">
                     <div class="food-info">
                         <div class="food-title">Burger</div>
                         <div class="food-price">২২০ ৳</div>
@@ -173,7 +176,7 @@
                 </div>
 
                 <div class="food-card" onclick="startOrder('Beef Pizza', 750)">
-                    <img src="beef pizza.jpeg">
+                    <img src="beef pizza.jpeg" class="food-img" alt="Pizza">
                     <div class="food-info">
                         <div class="food-title">Beef Pizza</div>
                         <div class="food-price">৭৫০ ৳</div>
@@ -182,7 +185,7 @@
                 </div>
 
                 <div class="food-card" onclick="startOrder('Cold Coffee', 150)">
-                    <img src="coffee.jpeg">
+                    <img src="coffee.jpeg" class="food-img" alt="Coffee">
                     <div class="food-info">
                         <div class="food-title">Cold Coffee</div>
                         <div class="food-price">১৫০ ৳</div>
@@ -190,25 +193,26 @@
                     </div>
                 </div>
 
-                <div class="food-card" onclick="startOrder('Cheez Pizza', 150)">
-                    <img src="cheez pizza.jpeg">
+                <div class="food-card" onclick="startOrder('Cheez Pizza', 250)">
+                    <img src="cheez pizza.jpeg" class="food-img" alt="Cheese Pizza">
                     <div class="food-info">
                         <div class="food-title">Cheez Pizza</div>
-                        <div class="food-price">2৫০ ৳</div>
+                        <div class="food-price">২৫০ ৳</div>
                         <button class="order-btn">অর্ডার করুন</button>
                     </div>
                 </div>
 
                 <div class="food-card" onclick="startOrder('Fast Food', 150)">
-                    <img src="fast food.jpeg" >
+                    <img src="fast food.jpeg" class="food-img" alt="Fast Food">
                     <div class="food-info">
                         <div class="food-title">Fast Food</div>
                         <div class="food-price">১৫০ ৳</div>
                         <button class="order-btn">অর্ডার করুন</button>
                     </div>
                 </div>
-                    <div class="food-card" onclick="startOrder('Lacchi', 150)">
-                    <img src="lacchi.jpeg" >
+                
+                <div class="food-card" onclick="startOrder('Lacchi', 150)">
+                    <img src="lacchi.jpeg" class="food-img" alt="Lacchi">
                     <div class="food-info">
                         <div class="food-title">Lacchi</div>
                         <div class="food-price">১৫০ ৳</div>
@@ -229,7 +233,8 @@
                     <div class="msg bot-msg">আসসালামু আলাইকুম! 🙏 মেন্যু থেকে আপনার পছন্দের খাবারের ছবিতে ক্লিক করে অর্ডার শুরু করুন।</div>
                 </div>
                 <div class="chat-input">
-                    <input type="number" id="user-input" placeholder="এখানে লিখুন..." onkeypress="checkEnter(event)" disabled>
+                    <!-- 🔴 Fixed: type="text" instead of number -->
+                    <input type="text" id="user-input" placeholder="এখানে লিখুন..." onkeypress="checkEnter(event)" disabled>
                     <button id="send-btn" onclick="processUserInput()" disabled>পাঠান</button>
                 </div>
             </div>
@@ -316,10 +321,12 @@
                 }, 700);
             } 
             else if (chatState === 2) {
+                // Remove any spaces from phone number in case user adds them by mistake
+                let cleanedPhone = text.replace(/\s+/g, '');
                 let phoneRegex = /^(01)[3-9][0-9]{8}$/; 
                 
                 setTimeout(() => {
-                    if (phoneRegex.test(text)) {
+                    if (phoneRegex.test(cleanedPhone)) {
                         appendMessage(`✅ ধন্যবাদ! আপনার অর্ডার কনফার্ম হয়েছে। এখন আপনাকে রেস্টুরেন্টের WhatsApp-এ নিয়ে যাওয়া হচ্ছে...`, "bot-msg");
                         
                         chatState = 0; 
@@ -334,7 +341,7 @@
                                            `🍽️ আইটেম: ${orderDetails.name}\n` +
                                            `📦 পরিমাণ: ${orderDetails.qty} টি\n` +
                                            `💰 মোট বিল: ${orderDetails.total} টাকা\n` +
-                                           `📞 কাস্টমার নাম্বার: ${text}\n\n` +
+                                           `📞 কাস্টমার নাম্বার: ${cleanedPhone}\n\n` +
                                            `দয়া করে কাস্টমারকে কল করে ডেলিভারি ঠিকানা জেনে নিন।`;
                         
                         let waLink = `https://wa.me/${RESTAURANT_OWNER_WHATSAPP}?text=${encodeURIComponent(adminMessage)}`;
@@ -344,4 +351,25 @@
                         }, 3000);
 
                     } else {
-                        appendMessage("❌ সঠিক ১১-ডিজিটের মোবাইল নাম্বার দিন (যেমন:
+                        appendMessage("❌ সঠিক ১১-ডিজিটের মোবাইল নাম্বার দিন (যেমন: 017XXXXXXXX)।", "bot-msg");
+                    }
+                }, 700);
+            }
+        }
+
+        function appendMessage(text, type) {
+            let div = document.createElement("div");
+            div.className = `msg ${type}`;
+            div.innerText = text;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function checkEnter(event) {
+            if (event.key === "Enter") {
+                processUserInput();
+            }
+        }
+    </script>
+</body>
+</html>
