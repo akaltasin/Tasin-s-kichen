@@ -39,8 +39,8 @@
             top: 0;
             z-index: 1000;
         }
-        header h1 { margin: 0; position: sticky; font-size: 22px; font-weight: 700; }
-        header p { margin: 0; position: sticky; font-size: 13px; opacity: 0.9; }
+        header h1 { margin: 0; font-size: 22px; font-weight: 700; }
+        header p { margin: 0; font-size: 13px; opacity: 0.9; }
         .contact-info { font-weight: 600; font-size: 15px; background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius: 8px;}
 
         /* Main Layout */
@@ -51,10 +51,9 @@
             margin: 20px auto;
             padding: 0 15px;
             gap: 25px;
-            position: sticky;
         }
 
-        /* Menu Section (Left) */
+        /* Menu Section */
         .menu-wrapper { flex: 1.5; min-width: 300px; }
         .section-title { font-size: 20px; margin-bottom: 20px; border-bottom: 2px solid var(--primary); display: inline-block; padding-bottom: 5px; }
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
@@ -75,7 +74,7 @@
         }
         .food-card:hover .order-btn { background: #ff6b81; }
 
-        /* AI Chat Section (Right) */
+        /* AI Chat Section */
         .chat-wrapper {
             flex: 1; min-width: 300px; position: sticky; top: 90px; height: calc(100vh - 120px);
         }
@@ -84,10 +83,9 @@
             display: flex; flex-direction: column; height: 100%; border: 1px solid #ddd;
         }
         .chat-header {
-            background: var(--secondary);position: sticky; color: white; padding: 15px; font-size: 16px; font-weight: 600;
+            background: var(--secondary); color: white; padding: 15px; font-size: 16px; font-weight: 600;
             display: flex; justify-content: space-between; align-items: center; border-radius: 15px 15px 0 0;
         }
-        
         .chat-header span { font-size: 11px; background: rgba(0,0,0,0.2); padding: 3px 8px; border-radius: 10px; }
         .chat-box { flex: 1; padding: 15px; overflow-y: auto; background: #f8f9fa; display: flex; flex-direction: column; gap: 12px; }
         .msg { max-width: 85%; padding: 10px 15px; font-size: 14px; line-height: 1.5; white-space: pre-line; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
@@ -112,42 +110,32 @@
         }
         .sms-toast.show { top: 20px; }
 
+        /* Tasin's Contact Section Style */
+        .my-contact {
+            background: white; max-width: 400px; margin: 40px auto; padding: 25px;
+            border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center; border-top: 4px solid var(--primary);
+        }
+        .my-contact h2 { margin: 0 0 15px; color: var(--text-dark); }
+        .my-contact img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--secondary); margin-bottom: 15px; }
+        .contact-links a { display: block; text-decoration: none; color: #555; font-size: 16px; margin: 8px 0; font-weight: 600; padding: 8px; border-radius: 8px; background: #f4f7f6; transition: 0.3s;}
+        .contact-links a:hover { background: var(--secondary); color: white; }
+
+        /* Footer Style */
+        footer { background: #2f3542; color: white; text-align: center; padding: 15px; font-size: 14px; margin-top: 20px; }
+
         /* --- MOBILE RESPONSIVE CSS --- */
         @media (max-width: 768px) {
             .container { flex-direction: column; padding: 10px; margin: 10px auto;}
             .menu-wrapper { width: 100%; flex: none; }
-            .chat-wrapper { 
-                width: 100%; flex: none; position: relative; top: 0; 
-                height: 450px; /* Fixed height for chat on mobile */
-                margin-top: 20px; margin-bottom: 30px;
-            }
-            .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } /* 2 items side-by-side on mobile */
+            .chat-wrapper { width: 100%; flex: none; position: relative; top: 0; height: 450px; margin-top: 20px; }
+            .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .food-img { height: 110px; }
             .food-title { font-size: 14px; }
             .food-price { font-size: 16px; }
             header h1 { font-size: 18px; }
-            .contact-info { font-size: 12px; }
-         }
-            section {
-            margin: 20px auto;
-            max-width: 300px;
-            background-color: #375903;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 255, 0, 0.2);
-            padding: 20px;
-            font-size: 18px; 
-
+            .my-contact { margin: 20px; }
         }
-  h2 {
-            color: #d61111;
-        }
-        img {
-            border-radius: 80%;
-            width: 20px;
-            height: 20px;
-            object-fit: cover;
-            margin-top: 10px;
-        }       
     </style>
 </head>
 <body>
@@ -167,7 +155,7 @@
             <div class="menu-grid">
                 
                 <div class="food-card" onclick="startOrder('Kacchi Biriyani', 350)">
-                    <img src="kacchi.jpeg" alt="Kacchi" class="food-img" onerror="this.src='https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&q=80'">
+                    <img src="kacchi.jpeg">
                     <div class="food-info">
                         <div class="food-title">Kacchi Biriyani</div>
                         <div class="food-price">৩৫০ ৳</div>
@@ -176,7 +164,7 @@
                 </div>
 
                 <div class="food-card" onclick="startOrder('Burger', 220)">
-                    <img src="burger.jpeg" alt="Burger" class="food-img" onerror="this.src='https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80'">
+                    <img src="burger.jpeg">
                     <div class="food-info">
                         <div class="food-title">Burger</div>
                         <div class="food-price">২২০ ৳</div>
@@ -185,7 +173,7 @@
                 </div>
 
                 <div class="food-card" onclick="startOrder('Beef Pizza', 750)">
-                    <img src="beef pizza.jpeg" alt="Pizza" class="food-img" onerror="this.src='https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'">
+                    <img src="beef pizza.jpeg">
                     <div class="food-info">
                         <div class="food-title">Beef Pizza</div>
                         <div class="food-price">৭৫০ ৳</div>
@@ -194,41 +182,45 @@
                 </div>
 
                 <div class="food-card" onclick="startOrder('Cold Coffee', 150)">
-                    <img src="coffee.jpeg" alt="Coffee" class="food-img" onerror="this.src='https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80'">
+                    <img src="coffee.jpeg">
                     <div class="food-info">
                         <div class="food-title">Cold Coffee</div>
                         <div class="food-price">১৫০ ৳</div>
                         <button class="order-btn">অর্ডার করুন</button>
-                  </div>
                     </div>
-                    <div class="food-card" onclick="startOrder('Cheez Pizza', 150)">
-                    <img src="cheez pizza.jpeg" alt="Coffee" class="food-img" onerror="this.src='https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80'">
+                </div>
+
+                <div class="food-card" onclick="startOrder('Cheez Pizza', 150)">
+                    <img src="cheez pizza.jpeg">
                     <div class="food-info">
                         <div class="food-title">Cheez Pizza</div>
-                        <div class="food-price">১৫০ ৳</div>
+                        <div class="food-price">2৫০ ৳</div>
                         <button class="order-btn">অর্ডার করুন</button>
                     </div>
-                    </div>
+                </div>
 
-                <div class="food-card" onclick="startOrder('Cold Coffee', 150)">
-                    <img src="coffee.jpeg" alt="Coffee" class="food-img" onerror="this.src='https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80'">
-                    <div class="food-info">
-                        <div class="food-title">Cold Coffee</div>
-                        <div class="food-price">১৫০ ৳</div>
-                        <button class="order-btn">অর্ডার করুন</button>
-                    </div>
-                    </div>
-                    <div class="food-card" onclick="startOrder('Fast Food', 150)">
-                    <img src="fast food.jpeg" alt="Coffee" class="food-img" onerror="this.src='https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80'">
+                <div class="food-card" onclick="startOrder('Fast Food', 150)">
+                    <img src="fast food.jpeg" >
                     <div class="food-info">
                         <div class="food-title">Fast Food</div>
                         <div class="food-price">১৫০ ৳</div>
                         <button class="order-btn">অর্ডার করুন</button>
                     </div>
-        </div>
+                </div>
+                    <div class="food-card" onclick="startOrder('Lacchi', 150)">
+                    <img src="lacchi.jpeg" >
+                    <div class="food-info">
+                        <div class="food-title">Lacchi</div>
+                        <div class="food-price">১৫০ ৳</div>
+                        <button class="order-btn">অর্ডার করুন</button>
+                    </div>
+                </div>
+
+            </div> <!-- End of menu-grid -->
+        </div> <!-- End of menu-wrapper -->
 
         <!-- AI Chatbot -->
-        <div class="chat-wrapper" position: sticky;>
+        <div class="chat-wrapper">
             <div class="chat-container">
                 <div class="chat-header">
                     <div>🤖 AI বট</div> <span>🟢 Active</span>
@@ -242,7 +234,24 @@
                 </div>
             </div>
         </div>
+    </div> <!-- End of container -->
+
+    <!-- My Contact Section -->
+    <div class="my-contact">
+        <h2>Contact Me</h2>
+        <img src="cont.png" alt="A K Al Tasin" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'">
+        <p>Feel free to reach out to me via:</p>
+        <div class="contact-links">
+            <a href="tel:+8801642596101" target="_blank">📞 Call Me</a>
+            <a href="https://wa.me/+8801642596101" target="_blank">💬 WhatsApp</a>
+            <a href="https://facebook.com/100015640369033" target="_blank">🌐 Facebook</a>
+        </div>
     </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 A K Al Tasin's Website. All Rights Reserved.</p>
+    </footer>
 
     <!-- SMS Notification -->
     <div class="sms-toast" id="sms-toast">
@@ -253,10 +262,8 @@
         </div>
     </div>
 
-    <!-- JavaScript For Order Logic & WhatsApp Forwarding -->
+    <!-- JavaScript For Order Logic -->
     <script>
-        // 🔴🔴🔴 এখানে আপনার (রেস্টুরেন্ট মালিকের) আসল WhatsApp নাম্বার দিন 🔴🔴🔴
-        // নাম্বার অবশ্যই 880 দিয়ে শুরু হতে হবে। (যেমন: 8801642596101)
         const RESTAURANT_OWNER_WHATSAPP = "8801642596101"; 
 
         let chatState = 0; 
@@ -274,7 +281,6 @@
             sendBtn.disabled = false;
             userInput.focus();
             
-            // On mobile, scroll down to chatbox when an item is clicked
             if(window.innerWidth <= 768) {
                 document.querySelector('.chat-wrapper').scrollIntoView({ behavior: 'smooth' });
             }
@@ -320,13 +326,10 @@
                         userInput.disabled = true;
                         sendBtn.disabled = true;
 
-                        // Show Success SMS Popup
                         const smsBox = document.getElementById("sms-toast");
                         smsBox.classList.add("show");
                         setTimeout(() => smsBox.classList.remove("show"), 4000);
 
-                        // 🟢 WhatsApp Message Logic 🟢
-                        // এই মেসেজটি রেস্টুরেন্ট মালিকের কাছে যাবে
                         let adminMessage = `🔔 *নতুন অর্ডার এসেছে!*\n\n` +
                                            `🍽️ আইটেম: ${orderDetails.name}\n` +
                                            `📦 পরিমাণ: ${orderDetails.qty} টি\n` +
@@ -336,47 +339,9 @@
                         
                         let waLink = `https://wa.me/${RESTAURANT_OWNER_WHATSAPP}?text=${encodeURIComponent(adminMessage)}`;
 
-                        // ৩ সেকেন্ড পর কাস্টমারকে WhatsApp-এ পাঠিয়ে দিবে
                         setTimeout(() => {
                             window.open(waLink, '_blank');
                         }, 3000);
 
                     } else {
-                        appendMessage("❌ সঠিক ১১-ডিজিটের মোবাইল নাম্বার দিন (যেমন: 017XXXXXXXX)।", "bot-msg");
-                    }
-                }, 700);
-            }
-        }
-
-        function appendMessage(text, type) {
-            let div = document.createElement("div");
-            div.className = `msg ${type}`;
-            div.innerText = text;
-            chatBox.appendChild(div);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        function checkEnter(event) {
-            if (event.key === "Enter") {
-                processUserInput();
-            }
-        }
-    </script>
-     </section>
-        
-        <section>
-            <h2>Contact Me</h2>
-            <!-- Add your photo here -->
-           <img src="cont.png" alt="A K Al Tasin's Photo">
-            <p>Feel free to reach out to me via:</p>
-            <a href="tel:+8801642596101" target="_blank">📞 Call Me</a><br>
-            <a href="https://wa.me/+8801642596101" target="_blank">💬 WhatsApp</a><br>
-            <a href="https://facebook.com/100015640369033" target="_blank">🌐 Facebook</a>
-        </section>
-    </main>
-    
-    <footer>
-        <p>&copy; 2024 A K Al Tasin's Website</p>
-    </footer>
-</body>
-</html>
+                        appendMessage("❌ সঠিক ১১-ডিজিটের মোবাইল নাম্বার দিন (যেমন:
