@@ -145,10 +145,13 @@
 
     <header>
         <div>
-            <h1>🍽️ Tasin's Kitchen</h1>
+            <h1>🍽️Tasin's Kitchen🍽️</h1>
             <p>Order Fast & Easy</p>
         </div>
-        <div class="contact-info">📞 সাপোর্ট</div>
+        <div class="contact">
+             <div class="contact-links">
+            <a href="tel:+8801642596101" target="_blank">📞 For Help</a>
+        </div>
     </header>
 
     <div class="container">
@@ -220,51 +223,6 @@
                     </div>
                 </div>
 
-                 <div class="food-card" onclick="startOrder('Kitkate Milkshake', 150)">
-                    <img src="kitkate milkshake.jpeg" class="food-img" alt="Kacchi">
-                    <div class="food-info">
-                        <div class="food-title">Kitkate Milkshake</div>
-                        <div class="food-price">১৫০ ৳</div>
-                        <button class="order-btn">অর্ডার করুন</button>
-                    </div>
-                </div>
-                
-                 <div class="food-card" onclick="startOrder('Pasta', 100)">
-                    <img src="pasta.jpeg" class="food-img" alt="Kacchi">
-                    <div class="food-info">
-                        <div class="food-title">Pasta</div>
-                        <div class="food-price">১০০ ৳</div>
-                        <button class="order-btn">অর্ডার করুন</button>
-                    </div>
-                </div>
-                
-                <div class="food-card" onclick="startOrder('Ramen', 100)">
-                    <img src="ramen.jpeg" class="food-img" alt="Kacchi">
-                    <div class="food-info">
-                        <div class="food-title">Ramen</div>
-                        <div class="food-price">১০০ ৳</div>
-                        <button class="order-btn">অর্ডার করুন</button>
-                    </div>
-                </div>
-                
-                <div class="food-card" onclick="startOrder('Sandwich', 80)">
-                    <img src="sandwich.jpeg" class="food-img" alt="Kacchi">
-                    <div class="food-info">
-                        <div class="food-title">Sandwich</div>
-                        <div class="food-price">৮০ ৳</div>
-                        <button class="order-btn">অর্ডার করুন</button>
-                    </div>
-                </div>
-                
-                <div class="food-card" onclick="startOrder('Shawarma', 250)">
-                    <img src="shawarma.jpeg" class="food-img" alt="Kacchi">
-                    <div class="food-info">
-                        <div class="food-title">Shawarma</div>
-                        <div class="food-price">২৫০ ৳</div>
-                        <button class="order-btn">অর্ডার করুন</button>
-                    </div>
-                </div>
-
             </div> <!-- End of menu-grid -->
         </div> <!-- End of menu-wrapper -->
 
@@ -272,10 +230,12 @@
         <div class="chat-wrapper">
             <div class="chat-container">
                 <div class="chat-header">
-                    <div>🤖 AI বট</div> <span>🟢 Active</span>
+                    <div>👨‍🍳 AK</div> <span>🟢 Active</span>
                 </div>
                 <div class="chat-box" id="chat-box">
-                    <div class="msg bot-msg">আসসালামু আলাইকুম! 🙏 মেন্যু থেকে আপনার পছন্দের খাবারের ছবিতে ক্লিক করে অর্ডার শুরু করুন।</div>
+                    <div class="msg bot-msg"><par>আসসালামু আলাইকুম!স্যার/ম্যাম🫡</par>
+                        <par>মেন্যু থেকে আপনার পছন্দের খাবারের ছবিতে ক্লিক করে অর্ডার শুরু করুন।</par>
+                    </div>
                 </div>
                 <div class="chat-input">
                     <!-- 🔴 Fixed: type="text" instead of number -->
@@ -359,7 +319,7 @@
                         orderDetails.total = orderDetails.price * qty;
                         chatState = 2; 
                         
-                        appendMessage(`ঠিক আছে, ${qty} টি ${orderDetails.name}-এর মোট বিল ${orderDetails.total} টাকা। \nকনফার্ম করতে আপনার ১১-ডিজিটের মোবাইল নাম্বারটি দিন।`, "bot-msg");
+                        appendMessage(`ঠিক আছে, ${qty} টি ${orderDetails.name}-এর মোট বিল ${orderDetails.total} টাকা। \nকনফার্ম করতে আপনার ১১-ডিজিটের Whatsapp নাম্বারটি দিন।`, "bot-msg");
                     } else {
                         appendMessage("❌ শুধু সংখ্যায় লিখুন কয়টি লাগবে? (যেমন: 1 বা 2)", "bot-msg");
                     }
@@ -372,7 +332,8 @@
                 
                 setTimeout(() => {
                     if (phoneRegex.test(cleanedPhone)) {
-                        appendMessage(`✅ ধন্যবাদ! আপনার অর্ডার কনফার্ম হয়েছে। এখন আপনাকে রেস্টুরেন্টের WhatsApp-এ নিয়ে যাওয়া হচ্ছে...`, "bot-msg");
+                        appendMessage(`✅ ধন্যবাদ! আপনার অর্ডার কনফার্ম হয়েছে।
+                         এখন আপনাকে রেস্টুরেন্টের WhatsApp-এ নিয়ে যাওয়া হচ্ছে...`, "bot-msg");
                         
                         chatState = 0; 
                         userInput.disabled = true;
@@ -396,7 +357,7 @@
                         }, 3000);
 
                     } else {
-                        appendMessage("❌ সঠিক ১১-ডিজিটের মোবাইল নাম্বার দিন (যেমন: 017XXXXXXXX)।", "bot-msg");
+                        appendMessage("❌ সঠিক ১১-ডিজিটের Whatsapp নাম্বার দিন (যেমন: 017XXXXXXXX)।", "bot-msg");
                     }
                 }, 700);
             }
